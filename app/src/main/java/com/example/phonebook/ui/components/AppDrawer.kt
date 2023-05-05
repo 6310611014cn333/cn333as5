@@ -169,7 +169,7 @@ fun AppDrawer(
 
         ScreenNavigationButton(
             icon = Icons.Filled.Home,
-            label = "Notes",
+            label = "Phone Books",
             isSelected = currentScreen == Screen.PhoneBooks,
             onClick = {
                 PhoneBooksRouter.navigateTo(Screen.PhoneBooks)

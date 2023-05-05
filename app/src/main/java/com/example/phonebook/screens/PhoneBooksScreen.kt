@@ -66,7 +66,7 @@ fun PhoneBooksScreen(viewModel: MainViewModel) {
                 content = {
                     Icon(
                         imageVector = Icons.Filled.Add,
-                        contentDescription = "Add Note Button"
+                        contentDescription = "Add Contact Button"
                     )
                 }
             )
@@ -92,8 +92,8 @@ private fun PhoneBooksList(
     onPhoneBookClick: (PhoneBookModel) -> Unit
 ) {
     LazyColumn {
-        items(count = phoneBooks.size) { noteIndex ->
-            val phoneBook = phoneBooks[noteIndex]
+        items(count = phoneBooks.size) { phoneBookIndex ->
+            val phoneBook = phoneBooks[phoneBookIndex]
             PhoneBook(
                 phoneBook = phoneBook,
                 onPhoneBookClick = onPhoneBookClick,
