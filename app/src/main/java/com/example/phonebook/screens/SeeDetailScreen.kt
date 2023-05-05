@@ -60,7 +60,7 @@ fun SeeDetailScreen(viewModel: MainViewModel) {
                 isEditingMode = isEditingMode,
                 onBackClick = { PhoneBooksRouter.navigateTo(Screen.PhoneBooks) },
                 onEditDetailClick = { PhoneBooksRouter.navigateTo(Screen.EditDetail) },
-                onDeleteNoteClick = {
+                onDeletePhoneBookClick = {
                     movePhoneBookToTrashDialogShownState.value = true
                 }
             )
@@ -78,12 +78,12 @@ fun SeeDetailScreen(viewModel: MainViewModel) {
                     movePhoneBookToTrashDialogShownState.value = false
                 },
                 title = {
-                    Text("Move note to the trash?")
+                    Text("Move contact to the trash?")
                 },
                 text = {
                     Text(
                         "Are you sure you want to " +
-                                "move this note to the trash?"
+                                "move this contact to the trash?"
                     )
                 },
                 confirmButton = {
@@ -110,7 +110,7 @@ fun DetailTopAppBar(
     isEditingMode: Boolean,
     onBackClick: () -> Unit,
     onEditDetailClick: () -> Unit,
-    onDeleteNoteClick: () -> Unit
+    onDeletePhoneBookClick: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -139,7 +139,7 @@ fun DetailTopAppBar(
             }
 
             if (isEditingMode) {
-                IconButton(onClick = onDeleteNoteClick) {
+                IconButton(onClick = onDeletePhoneBookClick) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete contact Button",
