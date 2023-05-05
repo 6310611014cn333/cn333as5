@@ -19,7 +19,7 @@ import com.example.phonebook.R.drawable
 import com.example.phonebook.ui.components.PhoneBook
 
 private const val NO_DIALOG = 1
-private const val RESTORE_NOTES_DIALOG = 2
+private const val RESTORE_PHONEBOOKS_DIALOG = 2
 private const val PERMANENTLY_DELETE_DIALOG = 3
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -27,7 +27,7 @@ private const val PERMANENTLY_DELETE_DIALOG = 3
 @ExperimentalMaterialApi
 fun TrashScreen(viewModel: MainViewModel) {
 
-    val notesInThrash: List<PhoneBookModel> by viewModel.phoneBooksInTrash
+    val phoneBooksInThrash: List<PhoneBookModel> by viewModel.phoneBooksInTrash
         .observeAsState(listOf())
 
     val selectedPhoneBooks: List<PhoneBookModel> by viewModel.selectedPhoneBooks
@@ -46,8 +46,8 @@ fun TrashScreen(viewModel: MainViewModel) {
                 onNavigationIconClick = {
                     coroutineScope.launch { scaffoldState.drawerState.open() }
                 },
-                onRestoreNotesClick = { dialogState.value = RESTORE_NOTES_DIALOG },
-                onDeleteNotesClick = { dialogState.value = PERMANENTLY_DELETE_DIALOG },
+                onRestorePhoneBooksClick = { dialogState.value = RESTORE_PHONEBOOKS_DIALOG },
+                onDeletePhoneBooksClick = { dialogState.value = PERMANENTLY_DELETE_DIALOG },
                 areActionsVisible = areActionsVisible
             )
         },
@@ -62,7 +62,7 @@ fun TrashScreen(viewModel: MainViewModel) {
         },
         content = {
             Content(
-                phoneBooks = notesInThrash,
+                phoneBooks = phoneBooksInThrash,
                 onPhoneBookClick = { viewModel.onPhoneBookSelected(it) },
                 selectedPhoneBooks = selectedPhoneBooks
             )
@@ -70,7 +70,7 @@ fun TrashScreen(viewModel: MainViewModel) {
             val dialog = dialogState.value
             if (dialog != NO_DIALOG) {
                 val confirmAction: () -> Unit = when (dialog) {
-                    RESTORE_NOTES_DIALOG -> {
+                    RESTORE_PHONEBOOKS_DIALOG -> {
                         {
                             viewModel.restorePhoneBooks(selectedPhoneBooks)
                             dialogState.value = NO_DIALOG
@@ -112,8 +112,8 @@ fun TrashScreen(viewModel: MainViewModel) {
 @Composable
 private fun TrashTopAppBar(
     onNavigationIconClick: () -> Unit,
-    onRestoreNotesClick: () -> Unit,
-    onDeleteNotesClick: () -> Unit,
+    onRestorePhoneBooksClick: () -> Unit,
+    onDeletePhoneBooksClick: () -> Unit,
     areActionsVisible: Boolean
 ) {
     TopAppBar(
@@ -128,17 +128,17 @@ private fun TrashTopAppBar(
         },
         actions = {
             if (areActionsVisible) {
-                IconButton(onClick = onRestoreNotesClick) {
+                IconButton(onClick = onRestorePhoneBooksClick) {
                     Icon(
                         painter = painterResource(id = drawable.baseline_restore_from_trash_24),
-                        contentDescription = "Restore Notes Button",
+                        contentDescription = "Restore Contact Button",
                         tint = MaterialTheme.colors.onPrimary
                     )
                 }
-                IconButton(onClick = onDeleteNotesClick) {
+                IconButton(onClick = onDeletePhoneBooksClick) {
                     Icon(
                         painter = painterResource(id = drawable.baseline_delete_forever_24),
-                        contentDescription = "Delete Notes Button",
+                        contentDescription = "Delete Contact Button",
                         tint = MaterialTheme.colors.onPrimary
                     )
                 }
@@ -158,13 +158,13 @@ private fun Content(
     Column {
 
         LazyColumn {
-            items(count = phoneBooks.size) { noteIndex ->
-                val phoneBook = phoneBooks[noteIndex]
-                val isNoteSelected = selectedPhoneBooks.contains(phoneBook)
+            items(count = phoneBooks.size) { phoneBookIndex ->
+                val phoneBook = phoneBooks[phoneBookIndex]
+                val isPhoneBookSelected = selectedPhoneBooks.contains(phoneBook)
                 PhoneBook(
                     phoneBook = phoneBook,
                     onPhoneBookClick = onPhoneBookClick,
-                    isSelected = isNoteSelected
+                    isSelected = isPhoneBookSelected
                 )
             }
         }
@@ -172,13 +172,13 @@ private fun Content(
 }
 
 private fun mapDialogTitle(dialog: Int): String = when (dialog) {
-    RESTORE_NOTES_DIALOG -> "Restore notes"
-    PERMANENTLY_DELETE_DIALOG -> "Delete notes forever"
+    RESTORE_PHONEBOOKS_DIALOG -> "Restore contacts"
+    PERMANENTLY_DELETE_DIALOG -> "Delete contacts forever"
     else -> throw RuntimeException("Dialog not supported: $dialog")
 }
 
 private fun mapDialogText(dialog: Int): String = when (dialog) {
-    RESTORE_NOTES_DIALOG -> "Are you sure you want to restore selected notes?"
-    PERMANENTLY_DELETE_DIALOG -> "Are you sure you want to delete selected notes permanently?"
+    RESTORE_PHONEBOOKS_DIALOG -> "Are you sure you want to restore selected contacts?"
+    PERMANENTLY_DELETE_DIALOG -> "Are you sure you want to delete selected contacts permanently?"
     else -> throw RuntimeException("Dialog not supported: $dialog")
 }

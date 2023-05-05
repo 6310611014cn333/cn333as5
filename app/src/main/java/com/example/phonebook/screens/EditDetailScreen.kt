@@ -100,12 +100,12 @@ fun EditDetailScreen(viewModel: MainViewModel) {
                     movePhoneBookToTrashDialogShownState.value = false
                 },
                 title = {
-                    Text("Move note to the trash?")
+                    Text("Move contact to the trash?")
                 },
                 text = {
                     Text(
                         "Are you sure you want to " +
-                                "move this note to the trash?"
+                                "move this contact to the trash?"
                     )
                 },
                 confirmButton = {
